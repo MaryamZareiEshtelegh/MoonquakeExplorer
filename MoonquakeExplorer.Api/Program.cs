@@ -10,7 +10,9 @@ builder.Services.AddScoped<MoonquakeService>();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<MoonquakeDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("MoonquakeDb")));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("MoonquakeDb")));
+
 
 var app = builder.Build();
 

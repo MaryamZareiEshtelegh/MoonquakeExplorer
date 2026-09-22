@@ -7,11 +7,13 @@ public class MoonquakeDbContext : DbContext
 {
     public MoonquakeDbContext(DbContextOptions<MoonquakeDbContext> options) : base(options)
     {
+        
     }
+    public DbSet<MoonquakeRecord> MoonquakeRecords =>
+    Set<MoonquakeRecord>();
 
-    public DbSet<MoonquakeRecord> Moonquakes => Set<MoonquakeRecord>();
-
-    public DbSet<SeismicStationRecord> SeismicStations => Set<SeismicStationRecord>();
+    public DbSet<SeismicStationRecord> SeismicStations =>
+    Set<SeismicStationRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
