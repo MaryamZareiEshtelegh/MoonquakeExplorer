@@ -10,6 +10,6 @@ public class MoonquakeConfiguration : IEntityTypeConfiguration<MoonquakeRecord>
     {
         builder.ToTable("Moonquakes");
         builder.HasKey(m => m.Id);
-        builder.Property(m => m.Category).HasMaxLength(50).IsRequired();
+        builder.HasIndex(m => m.OccurredAt).IsUnique();
     }
 }

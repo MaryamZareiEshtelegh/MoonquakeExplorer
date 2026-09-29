@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoonquakeExplorer.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MoonquakeExplorer.Data.Migrations
 {
     [DbContext(typeof(MoonquakeDbContext))]
-    partial class MoonquakeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260928204255_AddFullMoonquakeData")]
+    partial class AddFullMoonquakeData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,6 +136,9 @@ namespace MoonquakeExplorer.Data.Migrations
                     b.Property<int?>("PlotAvailabilityApollo16")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("RecordingStationId")
+                        .HasColumnType("uuid");
+
                     b.Property<int?>("SignalStartTime")
                         .HasColumnType("integer");
 
@@ -153,8 +159,7 @@ namespace MoonquakeExplorer.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OccurredAt")
-                        .IsUnique();
+                    b.HasIndex("RecordingStationId");
 
                     b.ToTable("Moonquakes", (string)null);
                 });
@@ -182,40 +187,17 @@ namespace MoonquakeExplorer.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SeismicStations", (string)null);
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            IsActive = true,
-                            Latitude = -3.0097999999999998,
-                            Longitude = -23.424900000000001,
-                            Name = "Apollo 12"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            IsActive = true,
-                            Latitude = -3.64419,
-                            Longitude = -17.477679999999999,
-                            Name = "Apollo 14"
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            IsActive = true,
-                            Latitude = 26.134060000000002,
-                            Longitude = 3.6299100000000002,
-                            Name = "Apollo 15"
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            IsActive = true,
-                            Latitude = -8.9758999999999993,
-                            Longitude = 15.4986,
-                            Name = "Apollo 16"
-                        });
+            modelBuilder.Entity("MoonquakeExplorer.Data.Models.MoonquakeRecord", b =>
+                {
+                    b.HasOne("MoonquakeExplorer.Data.Models.SeismicStationRecord", "RecordingStation")
+                        .WithMany()
+                        .HasForeignKey("RecordingStationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecordingStation");
                 });
 #pragma warning restore 612, 618
         }

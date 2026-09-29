@@ -1,8 +1,6 @@
 namespace MoonquakeExplorer.Data.Models;
 
-/// <summary>
-/// EF Core persistence model for a seismic station.
-/// </summary>
+
 public class SeismicStationRecord
 {
     public Guid Id { get; set; }

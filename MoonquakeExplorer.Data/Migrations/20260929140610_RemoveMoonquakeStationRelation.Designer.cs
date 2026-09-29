@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoonquakeExplorer.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MoonquakeExplorer.Data.Migrations
 {
     [DbContext(typeof(MoonquakeDbContext))]
-    partial class MoonquakeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260929140610_RemoveMoonquakeStationRelation")]
+    partial class RemoveMoonquakeStationRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,9 +155,6 @@ namespace MoonquakeExplorer.Data.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OccurredAt")
-                        .IsUnique();
 
                     b.ToTable("Moonquakes", (string)null);
                 });

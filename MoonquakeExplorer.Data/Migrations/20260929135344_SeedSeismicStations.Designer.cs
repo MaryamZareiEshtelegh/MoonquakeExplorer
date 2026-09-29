@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoonquakeExplorer.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MoonquakeExplorer.Data.Migrations
 {
     [DbContext(typeof(MoonquakeDbContext))]
-    partial class MoonquakeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260929135344_SeedSeismicStations")]
+    partial class SeedSeismicStations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,6 +136,9 @@ namespace MoonquakeExplorer.Data.Migrations
                     b.Property<int?>("PlotAvailabilityApollo16")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("RecordingStationId")
+                        .HasColumnType("uuid");
+
                     b.Property<int?>("SignalStartTime")
                         .HasColumnType("integer");
 
@@ -153,8 +159,7 @@ namespace MoonquakeExplorer.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OccurredAt")
-                        .IsUnique();
+                    b.HasIndex("RecordingStationId");
 
                     b.ToTable("Moonquakes", (string)null);
                 });
@@ -216,6 +221,17 @@ namespace MoonquakeExplorer.Data.Migrations
                             Longitude = 15.4986,
                             Name = "Apollo 16"
                         });
+                });
+
+            modelBuilder.Entity("MoonquakeExplorer.Data.Models.MoonquakeRecord", b =>
+                {
+                    b.HasOne("MoonquakeExplorer.Data.Models.SeismicStationRecord", "RecordingStation")
+                        .WithMany()
+                        .HasForeignKey("RecordingStationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecordingStation");
                 });
 #pragma warning restore 612, 618
         }

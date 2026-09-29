@@ -9,7 +9,10 @@ public class MoonquakeDbContext : DbContext
     {
         
     }
-    public DbSet<MoonquakeRecord> MoonquakeRecords =>
+    
+    //in entity jozve model mast 
+    //joziyat bar asas configuration hastesh
+    public DbSet<MoonquakeRecord> Moonquakes =>
     Set<MoonquakeRecord>();
 
     public DbSet<SeismicStationRecord> SeismicStations =>
