@@ -6,4 +6,5 @@ public interface IMoonquakeRepository
 {
     Task<List<MoonquakeRecord>> GetAllAsync();
     Task AddRangeAsync(List<MoonquakeRecord> moonquakes);
+    Task<HashSet<DateTime>> GetExistingOccurredAtAsync(List<DateTime> occurredAts);
 }
