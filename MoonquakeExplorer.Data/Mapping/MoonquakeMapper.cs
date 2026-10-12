@@ -18,12 +18,27 @@ public class MoonquakeMapper
 
         var hour = time.Value / 100;
         var minute = time.Value % 100;
+
+        //if (hour == 99 && minute == 99 || time.Value == 9999)
+        //{
+             //throw new ArgumentOutOfRangeException("Invalid time value.");
+       // }
         return DateTime.SpecifyKind(
         date.AddHours(hour).AddMinutes(minute),
         DateTimeKind.Utc);
+        
+      
     }
     public MoonquakeRecord Map(Moonquake moonquake)
     {
+        var signalStartedAt = BuildDateTime(moonquake.Year, moonquake.JulianDay,moonquake.SignalStartTime);
+        var signalStoppedAt = BuildDateTime(moonquake.Year, moonquake.JulianDay, moonquake.SignalStopTime);
+        if (signalStartedAt.HasValue &&
+            signalStoppedAt.HasValue &&
+            signalStoppedAt.Value < signalStartedAt.Value)
+        {
+            signalStoppedAt = signalStoppedAt.Value.AddDays(1);
+        }
         return new MoonquakeRecord
         {
             Year = moonquake.Year,
@@ -64,9 +79,9 @@ public class MoonquakeMapper
             Apollo16Lpx = moonquake.Apollo16Lpx,
             Apollo16Lpy = moonquake.Apollo16Lpy,
             Apollo16Lpz = moonquake.Apollo16Lpz,
-            OccurredAt = BuildDateTime(moonquake.Year,moonquake.JulianDay,moonquake.SignalStartTime),
-            SignalStartedAt = BuildDateTime(moonquake.Year, moonquake.JulianDay, moonquake.SignalStartTime),
-            SignalStoppedAt = BuildDateTime(moonquake.Year, moonquake.JulianDay, moonquake.SignalStopTime)
+            OccurredAt =  signalStartedAt,
+            SignalStartedAt = signalStartedAt,
+            SignalStoppedAt = signalStoppedAt
         };
     }
 }

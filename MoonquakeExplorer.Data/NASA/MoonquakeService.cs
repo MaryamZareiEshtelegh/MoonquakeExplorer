@@ -26,8 +26,17 @@ public class MoonquakeService
             var occurredAts = moonquakeRecords.Where(x => x.OccurredAt.HasValue).Select(x => x.OccurredAt!.Value).ToList();
 
             var existingOccurredAts = await _moonquakeRepository.GetExistingOccurredAtAsync(occurredAts);
-            var newRecords = moonquakeRecords.Where(x => x.OccurredAt.HasValue && !existingOccurredAts.Contains(x.OccurredAt.Value)).ToList();
-            await _moonquakeRepository.AddRangeAsync(newRecords);
+            //var newRecords = moonquakeRecords.Where(x => x.OccurredAt.HasValue && !existingOccurredAts.Contains(x.OccurredAt.Value)).ToList();
+
+            var newRecords = moonquakeRecords
+            .Where(x => x.OccurredAt.HasValue)
+            .DistinctBy(x => x.OccurredAt!.Value)
+            .Where(x => !existingOccurredAts.Contains(x.OccurredAt!.Value))
+            .ToList();
+            if (newRecords.Count > 0)
+            {
+                await _moonquakeRepository.AddRangeAsync(newRecords);
+            }
             return moonquakes;
         }
         catch (Exception ex)
