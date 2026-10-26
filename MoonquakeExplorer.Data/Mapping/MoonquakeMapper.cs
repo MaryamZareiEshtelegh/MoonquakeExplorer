@@ -13,12 +13,9 @@ public class MoonquakeMapper
             return null;
 
         var fullYear = 1900 + year.Value;
-        var date = new DateTime(fullYear, 1, 1)
-            .AddDays(julianDay.Value - 1);
-
+        var date = new DateTime(fullYear, 1, 1).AddDays(julianDay.Value - 1);
         var hour = time.Value / 100;
         var minute = time.Value % 100;
-
         //if (hour == 99 && minute == 99 || time.Value == 9999)
         //{
              //throw new ArgumentOutOfRangeException("Invalid time value.");
@@ -26,8 +23,6 @@ public class MoonquakeMapper
         return DateTime.SpecifyKind(
         date.AddHours(hour).AddMinutes(minute),
         DateTimeKind.Utc);
-        
-      
     }
     public MoonquakeRecord Map(Moonquake moonquake)
     {
@@ -82,6 +77,50 @@ public class MoonquakeMapper
             OccurredAt =  signalStartedAt,
             SignalStartedAt = signalStartedAt,
             SignalStoppedAt = signalStoppedAt
+        };
+    }
+    public Moonquake MapToDomain(MoonquakeRecord record)
+    {
+        return new Moonquake
+        {
+            Year = record.Year,
+            JulianDay = record.JulianDay,
+            SignalStartTime = record.SignalStartTime,
+            SignalStopTime = record.SignalStopTime,
+            AmplitudeApollo11_12 = record.AmplitudeApollo11_12,
+            AmplitudeApollo14 = record.AmplitudeApollo14,
+            AmplitudeApollo15 = record.AmplitudeApollo15,
+            AmplitudeApollo16 = record.AmplitudeApollo16,
+            PlotAvailabilityApollo11_12 = record.PlotAvailabilityApollo11_12,
+            PlotAvailabilityApollo14 = record.PlotAvailabilityApollo14,
+            PlotAvailabilityApollo15 = record.PlotAvailabilityApollo15,
+            PlotAvailabilityApollo16 = record.PlotAvailabilityApollo16,
+            DataQualityApollo11_12 = record.DataQualityApollo11_12,
+            DataQualityApollo14 = record.DataQualityApollo14,
+            DataQualityApollo15 = record.DataQualityApollo15,
+            DataQualityApollo16 = record.DataQualityApollo16,
+            Comments = record.Comments,
+            OriginalEventType = record.OriginalEventType,
+            OriginalClusterNumber = record.OriginalClusterNumber,
+            EventType = record.EventType,
+            ClusterNumber = record.ClusterNumber,
+            Grade = record.Grade,
+            Traces = record.Traces,
+            Apollo12Lpx = record.Apollo12Lpx,
+            Apollo12Lpy = record.Apollo12Lpy,
+            Apollo12Lpz = record.Apollo12Lpz,
+            Apollo14Spz = record.Apollo14Spz,
+            Apollo14Lpx = record.Apollo14Lpx,
+            Apollo14Lpy = record.Apollo14Lpy,
+            Apollo14Lpz = record.Apollo14Lpz,
+            Apollo15Spz = record.Apollo15Spz,
+            Apollo15Lpx = record.Apollo15Lpx,
+            Apollo15Lpy = record.Apollo15Lpy,
+            Apollo15Lpz = record.Apollo15Lpz,
+            Apollo16Spz = record.Apollo16Spz,
+            Apollo16Lpx = record.Apollo16Lpx,
+            Apollo16Lpy = record.Apollo16Lpy,
+            Apollo16Lpz = record.Apollo16Lpz
         };
     }
 }

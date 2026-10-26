@@ -4,10 +4,6 @@ using MoonquakeExplorer.Domain.Exceptions;
 using MoonquakeExplorer.Domain.ValueObjects;
 
 namespace MoonquakeExplorer.Domain.Entities;
-
-/// <summary>
-/// A single detected moonquake event: the domain's aggregate root.
-/// </summary>
 public sealed class Moonquake : Entity
 {
     public int? Year { get; set; }

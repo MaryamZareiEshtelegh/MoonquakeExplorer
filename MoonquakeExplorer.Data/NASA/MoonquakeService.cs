@@ -44,4 +44,12 @@ public class MoonquakeService
             throw new ApplicationException("An error occurred while retrieving moonquake data.", ex);
         }
     }
+    public async Task<List<Moonquake>> GetStoredMoonquakesAsync()
+    {
+        var records = await _moonquakeRepository.GetAllAsync();
+
+        return records
+            .Select(record => _moonquakeMapper.MapToDomain(record))
+            .ToList();
+    }
 }
